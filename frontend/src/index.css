@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+@import "tailwindcss";
+
+body {
+  font-family: 'Lora', serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+@keyframes panZoom {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.15) translate(-2%, 2%); }
+}
+
+.animate-slow-zoom {
+  animation: panZoom 12s linear infinite alternate;
+}
+
+/* Custom Scrollbar for Glass panels */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(217, 119, 6, 0.5); /* amber-600 with opacity */
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 119, 6, 0.8);
+}
