@@ -43,6 +43,7 @@ app.use(express.json());
 
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/sirportfolio';
+console.log('MONGO_URI starts with:', MONGO_URI.substring(0, 40) + '...');
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
