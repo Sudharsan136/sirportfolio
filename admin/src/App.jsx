@@ -39,10 +39,10 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         const [pubRes, galRes, poetRes, blogRes] = await Promise.all([
-          axios.get(${API_URL}/api/publications').catch(() => ({ data: [] })),
-          axios.get(${API_URL}/api/gallery').catch(() => ({ data: [] })),
-          axios.get(${API_URL}/api/poetry').catch(() => ({ data: [] })),
-          axios.get(${API_URL}/api/blog').catch(() => ({ data: [] }))
+          axios.get(`${API_URL}/api/publications`).catch(() => ({ data: [] })),
+          axios.get(`${API_URL}/api/gallery`).catch(() => ({ data: [] })),
+          axios.get(`${API_URL}/api/poetry`).catch(() => ({ data: [] })),
+          axios.get(`${API_URL}/api/blog`).catch(() => ({ data: [] }))
         ]);
         setStats({
           publications: pubRes.data.length,
@@ -104,7 +104,7 @@ const PublicationsManage = () => {
 
   const fetchPublications = async () => {
     try {
-      const res = await axios.get(${API_URL}/api/publications').catch(() => ({ data: [] }));
+      const res = await axios.get(`${API_URL}/api/publications`).catch(() => ({ data: [] }));
       setPublications(res.data);
       setLoading(false);
     } catch (err) {
@@ -116,7 +116,7 @@ const PublicationsManage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(${API_URL}/api/publications', formData);
+      await axios.post(`${API_URL}/api/publications`, formData);
       setShowForm(false);
       setFormData({ title: '', authors: '', journal: '', year: '', type: 'Journal' });
       fetchPublications();
@@ -250,7 +250,7 @@ const GalleryManage = () => {
 
   const fetchPhotos = async () => {
     try {
-      const res = await axios.get(${API_URL}/api/gallery').catch(() => ({ data: [] }));
+      const res = await axios.get(`${API_URL}/api/gallery`).catch(() => ({ data: [] }));
       setPhotos(res.data);
       setLoading(false);
     } catch (err) {
@@ -270,7 +270,7 @@ const GalleryManage = () => {
     formData.append('caption', caption);
 
     try {
-      await axios.post(${API_URL}/api/gallery', formData, {
+      await axios.post(`${API_URL}/api/gallery`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -371,7 +371,7 @@ const PoetryManage = () => {
 
   const fetchPoems = async () => {
     try {
-      const res = await axios.get(${API_URL}/api/poetry').catch(() => ({ data: [] }));
+      const res = await axios.get(`${API_URL}/api/poetry`).catch(() => ({ data: [] }));
       setPoems(res.data);
       setLoading(false);
     } catch (err) {
@@ -383,7 +383,7 @@ const PoetryManage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(${API_URL}/api/poetry', formData);
+      await axios.post(`${API_URL}/api/poetry`, formData);
       setShowForm(false);
       setFormData({ title: '', content: '' });
       fetchPoems();
@@ -483,7 +483,7 @@ const BlogManage = () => {
 
   const fetchBlogs = async () => {
     try {
-      const res = await axios.get(${API_URL}/api/blog').catch(() => ({ data: [] }));
+      const res = await axios.get(`${API_URL}/api/blog`).catch(() => ({ data: [] }));
       setBlogs(res.data);
       setLoading(false);
     } catch (err) {
@@ -502,7 +502,7 @@ const BlogManage = () => {
     }
 
     try {
-      await axios.post(${API_URL}/api/blog', formData, {
+      await axios.post(`${API_URL}/api/blog`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
