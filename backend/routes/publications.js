@@ -24,6 +24,16 @@ router.post('/', async (req, res) => {
   }
 });
 
+// PUT (update) a publication
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await Publication.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // DELETE a publication
 router.delete('/:id', async (req, res) => {
   try {

@@ -89,12 +89,13 @@ const PublicationsManage = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ title: '', authors: '', journal: '', year: '', type: '' });
+  const [editId, setEditId] = useState(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
 
   useEffect(() => {
     fetchPublications();
   }, []);
 
-  // All unique types: existing in DB + presets (no duplicates)
   const allTypes = [
     ...new Set([
       ...publications.map(p => p.type).filter(Boolean),
@@ -116,24 +117,35 @@ const PublicationsManage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}/api/publications`, formData);
+      if (editId) {
+        await axios.put(`${API_URL}/api/publications/${editId}`, formData);
+        setEditId(null);
+      } else {
+        await axios.post(`${API_URL}/api/publications`, formData);
+      }
       setShowForm(false);
-      setFormData({ title: '', authors: '', journal: '', year: '', type: 'Journal' });
+      setFormData({ title: '', authors: '', journal: '', year: '', type: '' });
       fetchPublications();
     } catch (err) {
       console.error(err);
-      alert('Failed to add publication');
+      alert('Failed to save publication');
     }
   };
 
+  const handleEdit = (pub) => {
+    setEditId(pub._id);
+    setFormData({ title: pub.title, authors: pub.authors, journal: pub.journal, year: pub.year, type: pub.type });
+    setShowForm(true);
+    setDeleteConfirmId(null);
+  };
+
   const handleDelete = async (id) => {
-    if (confirm('Are you sure you want to delete this publication?')) {
-      try {
-        await axios.delete(`$\{API_URL\}/api/publications/${id}`);
-        fetchPublications();
-      } catch (err) {
-        console.error(err);
-      }
+    try {
+      await axios.delete(`${API_URL}/api/publications/${id}`);
+      setDeleteConfirmId(null);
+      fetchPublications();
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -142,7 +154,7 @@ const PublicationsManage = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-slate-800 font-serif">Manage Publications</h1>
         <button 
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => { setShowForm(!showForm); setEditId(null); setFormData({ title: '', authors: '', journal: '', year: '', type: '' }); }}
           className="bg-amber-600 hover:bg-amber-500 text-white px-5 py-2.5 rounded-lg font-medium shadow-md transition-colors"
         >
           {showForm ? 'Cancel' : '+ Add New'}
@@ -151,7 +163,7 @@ const PublicationsManage = () => {
 
       {showForm && (
         <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 mb-8">
-          <h2 className="text-xl font-bold text-slate-800 mb-4">Add Publication</h2>
+          <h2 className="text-xl font-bold text-slate-800 mb-4">{editId ? 'Edit Publication' : 'Add Publication'}</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
@@ -186,7 +198,7 @@ const PublicationsManage = () => {
               </datalist>
             </div>
             <button type="submit" className="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-lg font-medium shadow-md transition-colors mt-4">
-              Save Publication
+              {editId ? 'Update Publication' : 'Save Publication'}
             </button>
           </form>
         </div>
@@ -224,8 +236,16 @@ const PublicationsManage = () => {
                   </td>
                   <td className="py-4 px-6 text-slate-600">{pub.year}</td>
                   <td className="py-4 px-6 text-right space-x-3">
-                    <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">Edit</button>
-                    <button onClick={() => handleDelete(pub._id)} className="text-red-600 hover:text-red-800 font-medium text-sm">Delete</button>
+                    <button onClick={() => handleEdit(pub)} className="text-blue-600 hover:text-blue-800 font-medium text-sm">Edit</button>
+                    {deleteConfirmId === pub._id ? (
+                      <span className="inline-flex items-center gap-2">
+                        <span className="text-slate-500 text-sm">Sure?</span>
+                        <button onClick={() => handleDelete(pub._id)} className="text-red-600 hover:text-red-800 font-bold text-sm">Yes</button>
+                        <button onClick={() => setDeleteConfirmId(null)} className="text-slate-500 hover:text-slate-700 text-sm">No</button>
+                      </span>
+                    ) : (
+                      <button onClick={() => setDeleteConfirmId(pub._id)} className="text-red-600 hover:text-red-800 font-medium text-sm">Delete</button>
+                    )}
                   </td>
                 </tr>
               ))}
