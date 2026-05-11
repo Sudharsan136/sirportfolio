@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Academic from './components/Academic';
 import Publications from './components/Publications';
+import Blog from './components/Blog';
+import Poetry from './components/Poetry';
+import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import sirPhoto from './assets/sir.jpg';
 import lib1 from './assets/lib1.jpg';
@@ -183,6 +186,15 @@ const App = () => {
 
           {/* Publications Component */}
           <Publications />
+
+          {/* Blog Component */}
+          <Blog />
+
+          {/* Poetry Component */}
+          <Poetry />
+
+          {/* Gallery Component */}
+          <Gallery />
 
           {/* Contact Component */}
           <Contact />

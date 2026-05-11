@@ -1,4 +1,6 @@
 import React from 'react';
+import sir2Image from '../assets/sir2.jpg';
+import sir4Image from '../assets/sir4.JPG';
 
 const Academic = () => {
   return (
@@ -12,36 +14,48 @@ const Academic = () => {
         </div>
 
         {/* Education Section */}
-        <div className="mb-20">
-          <h3 className="text-2xl font-serif text-amber-500 mb-8 flex items-center border-b border-white/10 pb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path d="M12 14l9-5-9-5-9 5 9 5z" />
-              <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-            </svg>
-            Education Journey
-          </h3>
-          
-          <div className="space-y-6 text-lg font-light leading-relaxed">
-            <p>
-              Dr. Venkatraman received his elementary and middle school education at <strong className="text-white">Vani Vilas Middle School</strong>, Mannargudi, and completed his secondary schooling up to SSLC (1976) at the century-old <strong className="text-white">National High School</strong> in the same town.
-            </p>
-            <p>
-              He pursued his Pre-University Course and B.A. in English at the <strong className="text-white">Government Arts College</strong>, Mannargudi (1977–1980). He then completed his M.A. in English Literature at <strong className="text-white">A.V.V.M. Sri Pushpam College</strong>, Poondi, in 1982.
-            </p>
-            <p>
-              After beginning his career as a Lecturer in English at a Polytechnic College in 1986, he continued to upgrade his qualifications through distance education. He earned his B.Ed. (English & Special English) from <strong className="text-white">Annamalai University</strong> in 1988, followed by an M.Ed. from <strong className="text-white">Madurai Kamaraj University</strong> in 1993, and later an M.Phil. (English) from the same university in 2000.
-            </p>
+        <div className="mb-20 flex flex-col lg:flex-row gap-12 items-start">
+          <div className="flex-1">
+            <h3 className="text-2xl font-serif text-amber-500 mb-8 flex items-center border-b border-white/10 pb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+              </svg>
+              Education Journey
+            </h3>
             
-            <div className="bg-amber-900/20 border border-amber-500/30 p-6 rounded-2xl my-8 shadow-lg">
-              <p className="text-amber-50">
-                He subsequently pursued doctoral research as a part-time scholar at <strong className="text-amber-400 font-semibold">SASTRA Deemed University</strong>, where he was serving as faculty. In 2009, he was awarded the <strong className="text-amber-400 font-semibold">Ph.D. in English Education</strong> for his thesis titled <span className="italic">"Developing a Set of Competencies for Teachers of English in Engineering Colleges."</span> Notably, he was the first faculty member in the Department of English at SASTRA to be awarded a Ph.D.
+            <div className="space-y-6 text-lg font-light leading-relaxed">
+              <p>
+                Dr. Venkatraman received his elementary and middle school education at <strong className="text-white">Vani Vilas Middle School</strong>, Mannargudi, and completed his secondary schooling up to SSLC (1976) at the century-old <strong className="text-white">National High School</strong> in the same town.
+              </p>
+              <p>
+                He pursued his Pre-University Course and B.A. in English at the <strong className="text-white">Government Arts College</strong>, Mannargudi (1977–1980). He then completed his M.A. in English Literature at <strong className="text-white">A.V.V.M. Sri Pushpam College</strong>, Poondi, in 1982.
+              </p>
+              <p>
+                After beginning his career as a Lecturer in English at a Polytechnic College in 1986, he continued to upgrade his qualifications through distance education. He earned his B.Ed. (English & Special English) from <strong className="text-white">Annamalai University</strong> in 1988, followed by an M.Ed. from <strong className="text-white">Madurai Kamaraj University</strong> in 1993, and later an M.Phil. (English) from the same university in 2000.
+              </p>
+              
+              <div className="bg-amber-900/20 border border-amber-500/30 p-6 rounded-2xl my-8 shadow-lg">
+                <p className="text-amber-50">
+                  He subsequently pursued doctoral research as a part-time scholar at <strong className="text-amber-400 font-semibold">SASTRA Deemed University</strong>, where he was serving as faculty. In 2009, he was awarded the <strong className="text-amber-400 font-semibold">Ph.D. in English Education</strong> for his thesis titled <span className="italic">"Developing a Set of Competencies for Teachers of English in Engineering Colleges."</span> Notably, he was the first faculty member in the Department of English at SASTRA to be awarded a Ph.D.
+                </p>
+              </div>
+              
+              <p className="italic text-gray-400 border-l-2 border-gray-600 pl-4">
+                Dr. Venkatraman’s educational journey reflects his commitment to both personal intellectual growth and professional advancement.
               </p>
             </div>
-            
-            <p className="italic text-gray-400 border-l-2 border-gray-600 pl-4">
-              Dr. Venkatraman’s educational journey reflects his commitment to both personal intellectual growth and professional advancement.
-            </p>
+          </div>
+          
+          <div className="w-full lg:w-1/3 xl:w-5/12 shrink-0 flex flex-col gap-8 mt-8 lg:mt-0">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+              <img 
+                src={sir2Image} 
+                alt="Dr. Venkatraman Academic Journey" 
+                className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
           </div>
         </div>
 
@@ -238,18 +252,31 @@ const Academic = () => {
         </div>
 
         {/* Awards and Recognitions */}
-        <div className="bg-gradient-to-r from-amber-900/40 via-amber-700/20 to-black/40 border border-amber-500/30 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden shadow-2xl">
+        <div className="bg-gradient-to-r from-amber-900/40 via-amber-700/20 to-black/40 border border-amber-500/30 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl flex flex-col md:flex-row items-center gap-10">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl"></div>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-amber-500 mx-auto mb-6 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-          </svg>
-          <h3 className="text-2xl md:text-3xl font-serif text-white mb-4 relative z-10">Awards & Recognitions</h3>
-          <p className="text-xl md:text-2xl text-amber-100/90 font-serif italic relative z-10">
-            "Lifetime Achievement Award"
-          </p>
-          <p className="text-gray-400 mt-4 relative z-10 font-medium tracking-wide">
-            Awarded by Venus International Foundation, Chennai (2016)
-          </p>
+          
+          <div className="flex-1 text-center md:text-left relative z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-amber-500 mx-auto md:mx-0 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            <h3 className="text-2xl md:text-3xl font-serif text-white mb-4">Awards & Recognitions</h3>
+            <p className="text-xl md:text-2xl text-amber-100/90 font-serif italic">
+              "Lifetime Achievement Award"
+            </p>
+            <p className="text-gray-400 mt-4 font-medium tracking-wide">
+              Awarded by Venus International Foundation, Chennai (2016)
+            </p>
+          </div>
+          
+          <div className="w-full md:w-1/2 lg:w-5/12 shrink-0 relative z-10">
+            <div className="rounded-2xl overflow-hidden shadow-2xl border border-amber-500/20 group relative">
+              <img 
+                src={sir4Image} 
+                alt="Lifetime Achievement Award" 
+                className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+          </div>
         </div>
 
       </div>
