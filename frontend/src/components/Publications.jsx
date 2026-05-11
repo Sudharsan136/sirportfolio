@@ -59,11 +59,13 @@ const classifyType = (type = '') => {
 };
 // ─────────────────────────────────────────────────────────────────────────────
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Publications = () => {
   const [dynamicPubs, setDynamicPubs] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/publications')
+    axios.get(`${API_URL}/api/publications`)
       .then(res => setDynamicPubs(res.data || []))
       .catch(() => {});
   }, []);
