@@ -42,7 +42,7 @@ router.delete('/:id', async (req, res) => {
     }
 
     if (blog.imageUrl) {
-      const publicId = blog.imageUrl.split('/').slice(-2).join('/').split('.')[0];
+      const publicId = blog.imageUrl.split('/').slice(-3).join('/').split('.')[0];
       try {
         const { default: cloudinary } = await import('../config/cloudinary.js');
         await cloudinary.uploader.destroy(publicId);

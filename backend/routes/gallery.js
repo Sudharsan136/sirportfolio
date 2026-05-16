@@ -15,29 +15,37 @@ router.get('/', async (req, res) => {
 });
 
 // Upload multiple photos to Cloudinary
-router.post('/', galleryUpload.array('images', 20), async (req, res) => {
-  try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: 'No images uploaded' });
+router.post('/', (req, res) => {
+  galleryUpload.array('images', 20)(req, res, async (err) => {
+    if (err) {
+      console.error('Multer error:', err);
+      return res.status(400).json({ message: `Upload error: ${err.message}` });
     }
+    
+    try {
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ message: 'No images uploaded' });
+      }
 
-    const caption = req.body.caption || '';
-    const savedPhotos = [];
+      const caption = req.body.caption || '';
+      const savedPhotos = [];
 
-    for (const file of req.files) {
-      // Cloudinary returns the URL in file.path
-      const newPhoto = new Gallery({
-        imageUrl: file.path,
-        caption,
-      });
-      const saved = await newPhoto.save();
-      savedPhotos.push(saved);
+      for (const file of req.files) {
+        // Cloudinary returns the URL in file.path
+        const newPhoto = new Gallery({
+          imageUrl: file.path,
+          caption,
+        });
+        const saved = await newPhoto.save();
+        savedPhotos.push(saved);
+      }
+
+      res.status(201).json(savedPhotos);
+    } catch (error) {
+      console.error('Save error:', error);
+      res.status(400).json({ message: error.message });
     }
-
-    res.status(201).json(savedPhotos);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+  });
 });
 
 // Delete a photo (also removes from Cloudinary)
@@ -49,7 +57,7 @@ router.delete('/:id', async (req, res) => {
     }
 
     // Extract public_id from Cloudinary URL and destroy
-    const publicId = photo.imageUrl.split('/').slice(-2).join('/').split('.')[0];
+    const publicId = photo.imageUrl.split('/').slice(-3).join('/').split('.')[0];
     try {
       const { default: cloudinary } = await import('../config/cloudinary.js');
       await cloudinary.uploader.destroy(publicId);

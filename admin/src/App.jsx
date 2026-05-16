@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import imageCompression from 'browser-image-compression';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -263,6 +264,8 @@ const GalleryManage = () => {
   const [showForm, setShowForm] = useState(false);
   const [files, setFiles] = useState([]);
   const [caption, setCaption] = useState('');
+  const [uploadProgress, setUploadProgress] = useState(null);
+  const isUploading = uploadProgress !== null;
 
   useEffect(() => {
     fetchPhotos();
@@ -283,13 +286,25 @@ const GalleryManage = () => {
     e.preventDefault();
     if (!files || files.length === 0) return alert('Please select at least one image');
 
-    const formData = new FormData();
-    files.forEach(file => {
-      formData.append('images', file);
-    });
-    formData.append('caption', caption);
-
+    setUploadProgress({ status: 'compressing' });
     try {
+      const options = {
+        maxSizeMB: 0.8,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
+      };
+
+      const compressedFiles = await Promise.all(
+        files.map(file => imageCompression(file, options))
+      );
+
+      const formData = new FormData();
+      compressedFiles.forEach((compressedFile, index) => {
+        formData.append('images', compressedFile, files[index].name);
+      });
+      formData.append('caption', caption);
+
+      setUploadProgress({ status: 'uploading' });
       await axios.post(`${API_URL}/api/gallery`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -301,14 +316,16 @@ const GalleryManage = () => {
       fetchPhotos();
     } catch (err) {
       console.error(err);
-      alert('Failed to add photo');
+      alert(`Failed to upload photos: ${err.response?.data?.message || err.message}`);
+    } finally {
+      setUploadProgress(null);
     }
   };
 
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete this photo?')) {
       try {
-        await axios.delete(`$\{API_URL\}/api/gallery/${id}`);
+        await axios.delete(`${API_URL}/api/gallery/${id}`);
         fetchPhotos();
       } catch (err) {
         console.error(err);
@@ -334,14 +351,14 @@ const GalleryManage = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Image File(s)</label>
-              <input type="file" multiple required onChange={e => setFiles(Array.from(e.target.files))} className="w-full border border-slate-300 rounded-lg p-2.5" accept="image/*" />
+              <input type="file" multiple required onChange={e => setFiles(Array.from(e.target.files))} className="w-full text-slate-500 bg-white border border-slate-300 rounded-lg cursor-pointer file:cursor-pointer file:mr-4 file:py-2.5 file:px-4 file:border-0 file:text-sm file:font-medium file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 p-1" accept="image/*" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Caption (Optional)</label>
               <input value={caption} onChange={e => setCaption(e.target.value)} className="w-full border border-slate-300 rounded-lg p-2.5" />
             </div>
-            <button type="submit" className="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-lg font-medium shadow-md transition-colors mt-4">
-              Upload Photo(s)
+            <button type="submit" disabled={isUploading} className="bg-slate-800 hover:bg-slate-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-6 py-2.5 rounded-lg font-medium shadow-md transition-colors mt-4">
+              {isUploading ? (uploadProgress?.status === 'compressing' ? 'Optimizing Images...' : 'Uploading to Cloudinary...') : 'Upload Photo(s)'}
             </button>
           </form>
         </div>
@@ -416,7 +433,7 @@ const PoetryManage = () => {
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete this poem?')) {
       try {
-        await axios.delete(`$\{API_URL\}/api/poetry/${id}`);
+        await axios.delete(`${API_URL}/api/poetry/${id}`);
         fetchPoems();
       } catch (err) {
         console.error(err);
@@ -496,6 +513,7 @@ const BlogManage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     fetchBlogs();
@@ -514,11 +532,14 @@ const BlogManage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUploading(true);
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
     if (file) {
-      formData.append('image', file);
+      const options = { maxSizeMB: 0.8, maxWidthOrHeight: 1920, useWebWorker: true };
+      const compressedFile = await imageCompression(file, options);
+      formData.append('image', compressedFile, file.name);
     }
 
     try {
@@ -535,13 +556,15 @@ const BlogManage = () => {
     } catch (err) {
       console.error(err);
       alert('Failed to add blog post');
+    } finally {
+      setIsUploading(false);
     }
   };
 
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete this blog post?')) {
       try {
-        await axios.delete(`$\{API_URL\}/api/blog/${id}`);
+        await axios.delete(`${API_URL}/api/blog/${id}`);
         fetchBlogs();
       } catch (err) {
         console.error(err);
@@ -571,14 +594,14 @@ const BlogManage = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Cover Image (Optional)</label>
-              <input type="file" onChange={e => setFile(e.target.files[0])} className="w-full border border-slate-300 rounded-lg p-2.5" accept="image/*" />
+              <input type="file" onChange={e => setFile(e.target.files[0])} className="w-full text-slate-500 bg-white border border-slate-300 rounded-lg cursor-pointer file:cursor-pointer file:mr-4 file:py-2.5 file:px-4 file:border-0 file:text-sm file:font-medium file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 p-1" accept="image/*" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Content</label>
               <textarea required value={content} onChange={e => setContent(e.target.value)} rows="8" className="w-full border border-slate-300 rounded-lg p-2.5 whitespace-pre-wrap"></textarea>
             </div>
-            <button type="submit" className="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-lg font-medium shadow-md transition-colors mt-4">
-              Publish Post
+            <button type="submit" disabled={isUploading} className="bg-slate-800 hover:bg-slate-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-6 py-2.5 rounded-lg font-medium shadow-md transition-colors mt-4">
+              {isUploading ? 'Publishing...' : 'Publish Post'}
             </button>
           </form>
         </div>
